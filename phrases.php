@@ -3,7 +3,6 @@
 
 include('nav.php');
 
-
 if (isset($_GET["page"])){
     $current_page = $_GET["page"];
 }

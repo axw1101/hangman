@@ -130,5 +130,6 @@ include('nav.php');
                 $conn->close();
             }
         ?>
+        
     </h2>
 </body>

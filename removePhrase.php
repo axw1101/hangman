@@ -18,7 +18,7 @@ include('nav.php');
         <div class="form_title">
             <h2>Remove a Phrase </h2>
         </div>
-        
+
         <div class="phrase_form_main">
             <form action="" method="POST" enctype="multipart/form-data">
 
@@ -82,5 +82,6 @@ include('nav.php');
                 
             }
         ?>
+        
     </h2>
 </body>

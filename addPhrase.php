@@ -97,7 +97,7 @@ include('nav.php');
 
                 $quote_date = $row['quote_date'];
                 $quote_time = $row['quote_time'];
-
+                
                 // if time is 8am, keep the date the same as the max entry and add 12 hours to the time
                 if ($quote_time == "08:00:00"){
                     $new_date = $quote_date;
@@ -106,11 +106,11 @@ include('nav.php');
 
                 // if the time is 8pm add 1 day to the date and set the time as 8am
                 if ($quote_time == "20:00:00"){
-                    $time_added = strtotime($quote_date) + (3600*24);
+                    $time_added = strtotime($quote_date) + (3600*36);
                     $new_date = date("Y-m-d", $time_added);
                     $new_time = "08:00:00";
                 }
-                        
+
                 //insert variables into quotes table
                 $sql = "INSERT INTO quote_table
                 (author, topic, quote, quote_date, quote_time)
@@ -130,6 +130,6 @@ include('nav.php');
                 $conn->close();
             }
         ?>
-        
+
     </h2>
 </body>

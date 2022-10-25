@@ -43,7 +43,7 @@ $current_day = date("Y-m-d");
 // set the initial cookies to zero
 
 function setInitialCookies(){
-    setcookie("numberOfGamesPlayed", 0, time()+360);
+    setcookie("numberOfGamesPlayed", 0, time()+3600);
     setcookie("numberOfGamesWon", 0, time()+3600);
     setcookie("winPercentage", 0, time()+3600);
     setcookie("currentWinStreak", 0, time()+3600);

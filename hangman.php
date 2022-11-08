@@ -1,11 +1,18 @@
 <?php
 include("stats.php");
+include("db_credentials.php");
 ?>
 
  <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 define("letters", "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 date_default_timezone_set('America/Chicago');
-session_start();
+
+if (!isset($_SESSION['loggedIn'])) {
+    $_SESSION['loggedIn'] = false;
+}
 
 // Check if the reset button was pressed.
 if (isset($_POST['button1'])) {
@@ -45,7 +52,6 @@ $current_day = date("Y-m-d");
 function setInitialCookies(){
     setcookie("numberOfGamesPlayed", 0, time()+3600);
     setcookie("numberOfGamesWon", 0, time()+3600);
-    setcookie("winPercentage", 0, time()+3600);
     setcookie("currentWinStreak", 0, time()+3600);
     setcookie("maxWinStreak", 0, time()+3600);
 }
@@ -145,21 +151,24 @@ function validatePhrase() {
         
         $guess_phrase = trim($_GET['phrase-guess']);
         $logical_chars = getLogicalChars($guess_phrase);
+        $currentWinStreak = 0;
 
         if ($_SESSION["logicalChars"] === $logical_chars) {
             $_SESSION["test"] = $_SESSION["logicalChars"];
             $_SESSION["fullMatch"] = array_fill(0, $_SESSION["quoteLength"], true);
             $_SESSION["guesses"] = 7;
             $_SESSION["gameOver"] = true;
-            setcookie("numberOfGamesPlayed", $_COOKIE["numberOfGamesPlayed"] + 1 , time()+3600);
+            
+            $currentWinStreak = $_COOKIE["numberOfGamesPlayed"] + 1;
+            setcookie("numberOfGamesPlayed", $currentWinStreak , time()+3600);
             setcookie("numberOfGamesWon", $_COOKIE["numberOfGamesWon"] + 1 , time()+3600);
             setcookie("currentWinStreak", $_COOKIE["currentWinStreak"] + 1 , time()+3600);
 
 
                 // set max winstreak
-
-                if($_COOKIE["maxWinStreak"] < $_COOKIE["currentWinStreak"]){
-                    setcookie("maxWinStreak", $_COOKIE["currentWinStreak"], time()+3600);
+                
+                if($_COOKIE["maxWinStreak"] <= $currentWinStreak){
+                    setcookie("maxWinStreak", $currentWinStreak, time()+3600);
                 }
 
         } else {
@@ -333,22 +342,6 @@ function resetGame()
 
    
  
-}
-
-# connects to the mysql database
-function dbConnect(){
-    DEFINE('DB_SERVER', 'localhost');
-    DEFINE('DB_NAME', 'quotes_db');
-    DEFINE('DB_USER', 'root');
-    DEFINE('DB_PASS', '');
-    
-    $conn = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
-
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    return $conn;
 }
 
 # generates a quote based on date and time from the mysql 'quote_db' database

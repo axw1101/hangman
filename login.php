@@ -1,6 +1,6 @@
 <?php
 if (empty(session_id()) && !headers_sent()) {
-        session_start();
+    session_start();
 }
 
 include("db_configuration.php");

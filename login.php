@@ -1,7 +1,8 @@
 <?php
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
+if (empty(session_id()) && !headers_sent()) {
+        session_start();
 }
+
 include("db_configuration.php");
 
 function processLogin() {

@@ -48,9 +48,20 @@ function isLoggedIn()
             <a href="hangman.php"><h1>Hangman</h1></a>
         </li>
 
+        <li>
+            <a href="help.php">
+                <img src="./images/help_icon.png" alt="">
+            </a>
 
+        </li>
+        
         <li>
             <?php include('stats.php') ?>
+
+        </li>
+
+        
+
 
         </li>
 

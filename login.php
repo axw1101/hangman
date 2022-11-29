@@ -1,19 +1,31 @@
 <?php
-if (session_status() == PHP_SESSION_NONE) {
+ob_start();
+if (empty(session_id()) && !headers_sent()) {
     session_start();
 }
-include("db_credentials.php");
+
+include("db_configuration.php");
 
 function processLogin() {
     if (isset($_POST['email']) and isset($_POST['password'])) {
         $email = $_POST['email'];
         $password = $_POST['password'];
 
+        if ( ($email == 'hm_admin1@email.com' or $email == 'hm_admin2@email.com') and $password == 'ics499') {
+            $_SESSION['loggedIn'] = true;
+            $_SESSION['userEmail'] = $email;
+            $_SESSION['userPrivelege'] = 'ADMIN';
+            header("Location: hangman.php");
+            return;
+        }
+
         if (checkEmail($email)) {
 
             if (checkPassword($email, $password)) {
                 $_SESSION['loggedIn'] = true;
+                $_SESSION['userPrivelege'] = 'USER';
                 header("Location: hangman.php");
+                return;
             } else {
                 echo "<p>Incorrect email/password. Please try again.</p></br>";
             }

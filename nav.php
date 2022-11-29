@@ -5,8 +5,16 @@
 
 
 <?php
-if (session_status() == PHP_SESSION_NONE) {
+if (empty(session_id()) && !headers_sent()) {
     session_start();
+}
+
+if (!isset($_SESSION['userPrivelege'])) {
+    $_SESSION['userPrivelege'] = '';
+}
+
+if (!isset($_SESSION['userEmail'])) {
+    $_SESSION['userEmail'] = '';
 }
 
 function isLoggedIn()
@@ -17,13 +25,19 @@ function isLoggedIn()
     return false;
 }
 ?>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+<!--- <script src="jquery/jquery.js"></script> -->
+<script src="js/user.js"></script> 
+<link rel="stylesheet" href="./css/hangman_style.css" />
+
 <nav>
     <link rel="stylesheet" href="./css/mainStylesheet.css">
 
     <ul class="nav-list">
 
         <li>
-            <a href="index.php">
+            <a href="hangman.php">
 
                 <img src="./images/app_logo.png" alt="">
 
@@ -31,7 +45,7 @@ function isLoggedIn()
         </li>
 
         <li id="title">
-            <h1>Hangman</h1>
+            <a href="hangman.php"><h1>Hangman</h1></a>
         </li>
 
 
@@ -66,7 +80,10 @@ function isLoggedIn()
 
                 <?php } ?>
                 <?php
-                if (isLoggedIn()) {
+                // if user roll is "USER" show phrases tab (this needs to change to admin later)
+                //$apiReturn = file_get_contents('https://wpapi.telugupuzzles.com/api/getRole.php?email=' . $_SESSION['userEmail']);
+                //$parsedApiReturn = json_decode( preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $apiReturn), true );
+                if($_SESSION['userPrivelege']=='ADMIN'){
                 ?>
                     <a href="phrases.php">
                         <li>
@@ -78,43 +95,18 @@ function isLoggedIn()
                 }
                 ?>
 
-
                 <?php
-                if (isLoggedIn()) {  ?>
-                <a href="customPhrases.php">
-                    <li>
-                        Custom Phrases
-                    </li>
-                </a>
-                <?php }?>
-
-
+                if ($_SESSION['userPrivelege']=='USER' or $_SESSION['userPrivelege']=='ADMIN') {
+                ?>
+                    <a href="customPhrases.php">
+                        <li>
+                            Custom Phrases
+                        </li>
+                    </a>
+                <?php
+                }
+                ?>
             </ul>
-
-
-
-
-
         </li>
-
-
-
-    <?php     
-        // if user roll is "USER" show phrases tab (this needs to change to admin later)
-        $apiReturn = file_get_contents('https://wpapi.telugupuzzles.com/api/getRole.php?email=' . $_SESSION['userEmail']);
-        $parsedApiReturn = json_decode( preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $apiReturn), true );
-
-        if($parsedApiReturn["data"]=="USER"){
-            echo'<a href="phrases.php">';
-                echo'<li>';
-                    echo'<img src="./images/key.png" alt="">';
-                    echo'<br>';
-                    echo'Phrases';
-                echo'</li>';
-            echo'</a>';
-        }
-    ?>
-
-
     </ul>
 </nav>

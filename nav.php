@@ -37,7 +37,7 @@ function isLoggedIn()
     <ul class="nav-list">
 
         <li>
-            <a href="hangman.php">
+            <a href="index.php">
 
                 <img src="./images/app_logo.png" alt="">
 
@@ -45,7 +45,7 @@ function isLoggedIn()
         </li>
 
         <li id="title">
-            <a href="hangman.php"><h1>Hangman</h1></a>
+            <a href="index.php"><h1>Hangman</h1></a>
         </li>
 
         <li>
